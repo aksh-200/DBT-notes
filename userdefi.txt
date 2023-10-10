@@ -1,0 +1,63 @@
+#include<iostream>
+using namespace std;
+#include<string.h>
+
+class String1
+{
+int len ;
+char *ptr;
+
+public:
+	String1();
+	String1(char );
+    String1(int, char );
+    
+	void show()
+	{cout<<ptr<<" - length is"<<len<<endl;
+	}
+};
+
+// void string1::show()
+// {
+// 	cout<<ptr<<" - length is"<<len<<endl;
+// }
+String1::String1()
+{
+	int len;
+	cout<<"Enter lenght\n";
+	
+	cin>>len;
+	this->len = len;
+	char * ptr1 = new char[len+1];
+	cout<<"enter datra\n";
+	cin>>ptr1;
+	ptr = new char [len+1];
+	strcpy(ptr,ptr1);
+}
+
+// String1::String1(char* ptr1)
+// {
+//     int len = strlen(ptr1);
+//     ptr = new char[len+1];
+//     strcpy(ptr,ptr1);
+// }
+
+String1::String1(int a , char p)
+{
+    ptr = new char[a+1];
+    this->len = a;
+    int i ;
+    for (i=0 ;i<a;i++)
+    {   
+        ptr[i]= p;
+        cout<<ptr[i];
+    }
+    cout<<endl;
+}
+
+
+int main()
+{
+	String1 s1(5,'a');
+	s1.show();
+}
