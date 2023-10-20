@@ -331,6 +331,7 @@ begin
  
 end $
 delimiter ; 
+
 */
 
 
@@ -374,14 +375,13 @@ delimiter ;
 
 
 
-
+/*
 
 
 drop procedure if EXISTS sepa_rate;
 delimiter $
 CREATE procedure sepa_rate( name varchar(100))
 begin 
- 
  
  
  declare  x int ;
@@ -400,7 +400,7 @@ begin
  
  else 
  
- set @y:= concat(@y,',',substr(name, x,1));
+ set @y:= concat(@y,substr(name, x,1));
  
  end if ;
  
@@ -416,6 +416,291 @@ delimiter ;
 
 
 
+*/
+
+
+/*
+drop procedure if EXISTS sepa_rate;
+delimiter $
+CREATE procedure sepa_rate( name varchar(100))
+begin 
+ 
+ 
+ declare  x int ;
+ 
+ 
+ set x:= 0;
+  set @z:= "";
+  set @y:= "";
+ lbl1:LOOP
+  
+ set x := x+ 1;
+ 
+ if ASCII(substr(name, x,1)) < 65
+ then 
+ set @z:= concat(@z,substr(name, x,1));
+ 
+ else 
+ 
+ set @y:= concat(@y,substr(name, x,1));
+ 
+ end if ;
+ 
+ if x > LENGTH(name)-1
+ then 
+ leave lbl1;
+ end if ;
+ end loop ;
+ 
+end $
+delimiter ; 
+
+
+*/
+
+
+/*
+drop procedure if EXISTS sepa_rate;
+delimiter $
+CREATE procedure sepa_rate( name varchar(100))
+begin 
+ 
+ 
+ declare  x int ;
+ 
+ 
+ set x:= 0;
+  set @z:= "";
+  set @y:= "";
+ lbl1:LOOP
+  
+ set x := x+ 1;
+ 
+ if ASCII(substr(name, x,1)) < 97
+ then 
+ set @z:= concat(@z,substr(name, x,1));
+ 
+ else 
+ 
+ set @y:= concat(@y,substr(name, x,1));
+ 
+ end if ;
+ 
+ if x > LENGTH(name)-1
+ then 
+ leave lbl1;
+ end if ;
+ end loop ;
+ 
+end $
+delimiter ; 
+
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+drop procedure if EXISTS sepa_rate;
+delimiter $
+CREATE procedure sepa_rate( name varchar(100))
+begin 
+ 
+ declare  x int ;
+ 
+ 
+ set x:=0;
+ set @n:= 0;
+ set @v:= 0;
+ set @w:= 0;
+  
+ lbl1:LOOP
+  
+ set x := x+ 1;
+ 
+ set @y:= substr(name, x,1);
+ 
+ if ASCII(substr(name, x,1)) =32 
+ 
+ then 
+ set @w:= @w + 1  ;
+ 
+  end if;
+ 
+ if  @y BETWEEN '0' and '9'
+ then 
+ set @n:= @n + 1  ;
+ end if;
+
+ if @y like 'a' or @y like 'e' or @y like 'i' or @y like 'o' or @y like 'u' 
+ 
+then 
+set @v:= @v + 1  ;
+ 
+end if ;
+
+ 
+
+
+ if x > LENGTH(name)-1
+ then 
+ leave lbl1;
+ end if ;
+ end loop ;
+ 
+end $
+delimiter ; 
+
+
+
+
+
+
+*/
+
+/*
+drop trigger if exists tr1;
+delimiter $
+
+create trigger tr1 before insert on insertstudent  for EACH ROW
+
+BEGIN
+
+insert into log values ("Record inserted successfully");
+
+end $
+
+delimiter ; 
+*/
+
+/*
+drop trigger if exists tr1;
+delimiter $
+
+create trigger tr1 before insert on student1  for EACH ROW
+
+BEGIN
+
+insert into log_student values (new.id , new.firstname , new.lastname);
+
+end $
+
+delimiter ; 
+*/
+
+/*
+drop trigger if exists tr1;
+/*drop trigger if exists tr2;
+/*
+delimiter $
+
+
+
+
+create trigger tr1 before insert on st2  for EACH ROW
+
+BEGIN
+
+insert into log500 values (new.id,new.name );
+
+end $
+delimiter ;
+
+*/
+
+/*
+create trigger tr2 after UPDATE on student1  for EACH ROW
+
+BEGIN
+
+
+
+update log3 set firstname = new.firstname , lastname = new.lastname where id = new.id;
+
+end $
+
+delimiter ; 
+*/
+
+/*
+
+drop trigger if exists tr1;
+
+delimiter $
+
+create trigger tr1 before DELETE on st1  for EACH ROW
+
+BEGIN
+
+insert into log20 values (old.id,old.name );
+
+end $
+delimiter ;
+
+*/
+
+
+/*
+drop TRIGGER if EXISTS tr5;
+delimiter $
+
+create TRIGGER tr5 before insert on st1 for each row
+BEGIN
+IF
+dayname(now())='Sunday' then
+signal sqlstate '42000' SET message_text ='Invalid tran. holiday';
+
+ELSE
+insert into log20 values(new.id, new.name);
+end if;
+end $
+delimiter ;
+*/
+
+/*
+
+drop trigger if exists tr50;
+delimiter $
+create trigger tr50 before insert on rt for each row 
+BEGIN
+	if new.age < 18 THEN
+		signal sqlstate '42000' set message_text = 'Person not eligible for voting';
+	end if;
+
+end $ 
+delimiter ;
+
+*/
+
+
+
+
+
+drop trigger if exists tr52;
+delimiter $
+create trigger tr52 before insert on pre2  for each row 
+BEGIN
+
+
+declare pid bool;
+set p:= false;
+select true into pid  from patient where pid = new.pid;
+if pid 
+then 
+
+ signal sqlstate '42000' set message_text = 'Person not register';
+
+
+end if ;
+
+end $ 
+delimiter ;
 
 
 
