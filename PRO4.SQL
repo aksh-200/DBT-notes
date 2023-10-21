@@ -680,7 +680,7 @@ delimiter ;
 
 
 
-
+/*
 
 drop trigger if exists tr52;
 delimiter $
@@ -688,12 +688,14 @@ create trigger tr52 before insert on pre2  for each row
 BEGIN
 
 
-declare pid bool;
-set p:= false;
-select true into pid  from patient where pid = new.pid;
-if pid 
-then 
+declare flag bool;
 
+set flag:=true;
+
+   
+select false into flag  from patient where pid = new.pid;
+if flag
+then
  signal sqlstate '42000' set message_text = 'Person not register';
 
 
@@ -701,6 +703,138 @@ end if ;
 
 end $ 
 delimiter ;
+
+
+
+*/
+
+/*
+
+drop function if exists sumSalary;
+delimiter $
+
+create FUNCTION sumSalary (x int ) returns int 
+deterministic 
+
+BEGIN
+declare z int; 
+select sum(sal) into z from emp where deptno = x;
+return z;
+end $
+delimiter ;
+
+*/
+/*
+drop function if EXISTS sumSal;
+delimiter $
+
+create function sumSal(x int) returns int
+deterministic
+BEGIN
+DECLARE z int;
+select sum(sal) into z from emp where deptno = x;
+RETURN z;
+end $
+delimiter ;
+
+*/
+
+/*
+drop FUNCTION if exists accept_email;
+delimiter $
+create FUNCTION accept_email(y varchar(20)) returns varchar(30)
+deterministic
+BEGIN
+	set @ch := FALSE;
+	SELECT TRUE into @ch from login where email_id= y;
+	IF @ch THEN
+		SELECT CONCAT(username,"  ,   password=",password) INTO @x from login where email_id= y;
+	
+	ELSE
+		SELECT "Employee not exists" into @x;
+	end if;
+	return @x ;
+
+
+
+end $
+delimiter ;
+
+*/
+
+/*
+
+drop function if exists sum_marks ;
+delimiter $
+
+create function sum_marks(x int ) returns int 
+deterministic
+begin 
+
+select sum(marks) into @z from student_qualifications where studentid = x;
+return @z;
+
+end $
+delimiter ;
+
+*/
+
+/*
+drop function if EXISTS f5;
+delimiter $
+create function f5() returns int
+deterministic
+BEGIN
+
+
+DECLARE i INT;
+DECLARE j INT;
+SET i = 100000;
+SET j = 900000;
+SELECT FLOOR(i + RAND()*(j-i)) into @z;
+return @z;
+
+end $
+delimiter ;
+  
+*/
+
+/*
+drop function if EXISTS autoNumber;
+delimiter $
+create function autoNumber() returns int 
+deterministic
+begin 
+select (max(id) + 1) into @z from stu1;
+
+
+return @z;
+
+end $
+delimiter ;
+
+ */
+ 
+ drop function if EXISTS f5;
+ delimiter $
+ create function f5() returns INTEGER
+ deterministic
+ BEGIN
+ select max(id)+ 1 into @z from stu1;
+ return @z;
+ 
+ end $
+ delimiter ;
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
 
 
 
